@@ -18,4 +18,6 @@ export class userEntity {
     updatedDt: Date
     @Column({ unique: true })
     login: string
+    @Column()
+    accesToken: string
 }

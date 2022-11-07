@@ -23,14 +23,20 @@ export class AuthService {
     }
 
     async loginlauncher(dto: userDto) {
+
+        const accesToken = await this.generateToken()
+
         const user = await this.validateUser(dto)
+        user.accesToken = accesToken;
 
         const tokens = await this.issueTokenPair(String(user.id))
-        
-        return {
+
+
+        return await this.userRepository.save(user), {
             user: this.returnUserFields(user),
-            ...tokens
+            ...tokens,
         }
+        
     }
 
     async register(dto: authDto){
@@ -40,16 +46,24 @@ export class AuthService {
 
         const salt = await genSalt(10)
 
-        const newUser = this.userRepository.create({email: dto.email, login: dto.login , password: await hash(dto.password, salt)})
+        const accesToken = await this.generateToken()
+
+        const newUser = this.userRepository.create({email: dto.email, login: dto.login , password: await hash(dto.password, salt), accesToken: accesToken})
 
         const user = await this.userRepository.save(newUser)
 
         const tokens = await this.issueTokenPair(String(user.id))
 
+
         return {
             user: this.returnUserFields(user),
             ...tokens
         }
+    }
+
+    async generateToken() {
+        const accestoken = Math.random() * 1000000000 + "." + Math.random() * 100000
+        return accestoken
     }
 
     async validateUser(dto: userDto) {
@@ -76,7 +90,8 @@ export class AuthService {
         return {
             id: user.id,
             email: user.email,
-            login: user.login
+            login: user.login,
+            accesToken: user.accesToken
         }
     }
 }

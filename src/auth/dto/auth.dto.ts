@@ -16,4 +16,7 @@ export class authDto {
     })
     @IsString()
     password: string
+
+    @Column()
+    accesToken: string
 }
