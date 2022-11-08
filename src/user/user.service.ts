@@ -14,7 +14,10 @@ export class UserService {
             id: Date.now(),
             ...userDto,
             createdDt: new Date(),
-            updatedDt: new Date()
+            updatedDt: new Date(),
+            accesToken: null,
+            serverID: null,
+            skin: null
         }
         return await this.userRepository.save(newUser)
     } 

@@ -8,6 +8,7 @@ import { getSqliteConfig } from './config/sqlite.config';
 import { UserModule } from './user/user.module';
 import { ClienttokenController } from './clienttoken/clienttoken.controller';
 import { ClienttokenModule } from './clienttoken/clienttoken.module';
+import { ServerModule } from './server/server.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -18,7 +19,8 @@ import { ClienttokenModule } from './clienttoken/clienttoken.module';
     }),
     AuthModule,
     UserModule,
-    ClienttokenModule],
+    ClienttokenModule,
+    ServerModule],
   controllers: [AppController],
   providers: [AppService],
 })

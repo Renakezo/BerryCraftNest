@@ -6,7 +6,7 @@ import { userDto } from 'src/user/dto/user.dto';
 import { userEntity } from 'src/user/entity/user.entity';
 import { Repository } from 'typeorm';
 import { authDto } from './dto/auth.dto';
-
+import {v4} from 'uuid'
 @Injectable()
 export class AuthService {
     constructor(@InjectRepository(userEntity) private readonly userRepository: Repository<userEntity>, private readonly jwtService: JwtService) {}
@@ -24,7 +24,7 @@ export class AuthService {
 
     async loginlauncher(dto: userDto) {
 
-        const accesToken = await this.generateToken()
+        const accesToken = v4()
 
         const user = await this.validateUser(dto)
         user.accesToken = accesToken;
@@ -42,11 +42,11 @@ export class AuthService {
     async register(dto: authDto){
         const oldLogin = await this.userRepository.findOne({where: {login: dto.login}})
         const oldUser = await this.userRepository.findOne({where: {email: dto.email}})
-        if(!(oldLogin == null) || !(oldLogin == null)) throw new BadRequestException('User with this email or login is already in the system')
+        if(!(oldLogin == null) || !(oldUser == null)) throw new BadRequestException('User with this email or login is already in the system')
 
         const salt = await genSalt(10)
 
-        const accesToken = await this.generateToken()
+        const accesToken = v4()
 
         const newUser = this.userRepository.create({email: dto.email, login: dto.login , password: await hash(dto.password, salt), accesToken: accesToken})
 
@@ -61,10 +61,7 @@ export class AuthService {
         }
     }
 
-    async generateToken() {
-        const accestoken = Math.random() * 1000000000 + "." + Math.random() * 100000
-        return accestoken
-    }
+  
 
     async validateUser(dto: userDto) {
         const user = await this.userRepository.findOne({where: {login: dto.login}})

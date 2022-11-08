@@ -20,4 +20,8 @@ export class userEntity {
     login: string
     @Column()
     accesToken: string
+    @Column({nullable: true})
+    serverID: string | null
+    @Column({nullable: true})
+    skin: string
 }
