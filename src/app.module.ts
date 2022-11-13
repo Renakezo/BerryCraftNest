@@ -9,6 +9,8 @@ import { UserModule } from './user/user.module';
 import { ClienttokenController } from './clienttoken/clienttoken.controller';
 import { ClienttokenModule } from './clienttoken/clienttoken.module';
 import { ServerModule } from './server/server.module';
+import { SkinsModule } from './skins/skins.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -17,10 +19,14 @@ import { ServerModule } from './server/server.module';
       inject: [ConfigService],
       useFactory: getSqliteConfig,
     }),
+    MulterModule.register({
+      dest: "./skin"
+    }),
     AuthModule,
     UserModule,
     ClienttokenModule,
-    ServerModule],
+    ServerModule,
+    SkinsModule],
   controllers: [AppController],
   providers: [AppService],
 })

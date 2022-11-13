@@ -11,17 +11,18 @@ export class serverService {
 
     async serverData(dto: serverDto) {
         const user = await this.serverRepository.findOne({where: {login: dto.login}})
-        user.serverID = dto.serverID
-        return await this.serverRepository.save(user), {
-            user: this.returnUserFields(user)
-        }
+        if(user.serverID == dto.serverID) 
+        return (this.returnUserFields(user))
     }
 
     returnUserFields(user: userEntity) {
         return {
             id: user.id,
             login: user.login,
-            skin: user.skin
+            "properties": [{
+                name: "textures",
+                value: user.skin,
+            }]
         }
     }
 }

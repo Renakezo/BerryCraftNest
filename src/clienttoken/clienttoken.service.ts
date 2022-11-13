@@ -11,6 +11,7 @@ export class ClienttokenService {
     async accestoken(dto: clientDto) {
         const user = await this.clientRepository.findOne({where: {id: dto.id}})
         if(dto.accesToken != user.accesToken) throw new BadRequestException('Invalid AccesToken')
-        if(dto.serverID != user.serverID) throw new BadRequestException('Invalid serverID')
+        user.serverID = dto.serverID
+        await this.clientRepository.save(user)
     }
 }

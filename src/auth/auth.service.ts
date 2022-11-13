@@ -32,10 +32,8 @@ export class AuthService {
         const tokens = await this.issueTokenPair(String(user.id))
 
 
-        return await this.userRepository.save(user), {
-            user: this.returnUserFields(user),
-            ...tokens,
-        }
+        return (await this.userRepository.save(user), 
+        this.returnUserFields(user))
         
     }
 
