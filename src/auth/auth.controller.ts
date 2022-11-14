@@ -9,7 +9,7 @@ export class AuthController {
 
     @UsePipes(new ValidationPipe())
     @HttpCode(200)
-    @Get('login')
+    @Post('login')
     async login(@Body() dto: userDto) {
         return this.AuthService.login(dto)
     }
