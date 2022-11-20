@@ -17,7 +17,7 @@ export class AuthService {
         const tokens = await this.issueTokenPair(String(user.id))
 
         return {
-            user: this.returnUserFields(user),
+            user: this.returnUserFieldsSite(user),
             ...tokens
         }
     }
@@ -87,6 +87,14 @@ export class AuthService {
             email: user.email,
             login: user.login,
             accesToken: user.accesToken
+        }
+    }
+
+    returnUserFieldsSite(user: userEntity) {
+        return {
+            id: user.id,
+            email: user.email,
+            login: user.login
         }
     }
 }
